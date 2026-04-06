@@ -1,0 +1,6 @@
+Nasi Goreng,12000
+Ayam Penyet,13000
+Es Teh,5000
+Dimsum,20000
+Kebab,8000
+Dawm,50000000000
