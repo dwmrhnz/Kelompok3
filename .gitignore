@@ -1,0 +1,9 @@
+# Mengabaikan file cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Mengabaikan file sistem operasi (opsional tapi disarankan)
+.DS_Store
+Thumbs.db

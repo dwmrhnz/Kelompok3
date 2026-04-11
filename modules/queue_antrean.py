@@ -1,5 +1,3 @@
-# File: queue_antrian.py
-
 import os
 
 class QueuePesanan:
@@ -102,8 +100,8 @@ class QueuePesanan:
                 print(f"[GAGAL] Maaf, menu '{pesanan}' tidak ditemukan di sistem.")
                 continue
                 
-            # ASUMSI UNTUK DAWAM: fungsi cari_menu mengembalikan tuple (harga, stok)
-            harga_menu, stok_menu = hasil_pencarian
+            harga_menu = hasil_pencarian.harga
+            stok_menu = hasil_pencarian.stok
             
             if stok_menu <= 0:
                 print(f"[GAGAL] Maaf, stok untuk menu '{pesanan}' sedang habis/kosong.")
@@ -176,10 +174,7 @@ class QueuePesanan:
             # Rewrite file text dengan data baru
             with open(nama_file, 'w', encoding='utf-8') as file:
                 for item in data_menu_terupdate:
-                    # Menulis sesuai format: jenis,nama,harga,stok
-                    # Misal: Makanan,Nasi Goreng,15000,10
-                    baris_teks = f"{item['jenis']},{item['nama']},{item['harga']},{item['stok']}\n"
-                    file.write(baris_teks)
+                    file.write(item + "\n")
                     
             print(f"[SISTEM] Data stok terbaru berhasil disimpan ke dalam file '{nama_file}'.")
             
