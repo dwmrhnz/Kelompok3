@@ -1,0 +1,55 @@
+Makanan Utama,Nasi Ayam Sambal Lalap,18100,100
+Makanan Utama,Nasi Ayam Kuah Opor,15500,100
+Makanan Utama,Nasi Abon,9100,100
+Makanan Utama,Nasi Abon Telor,12500,100
+Makanan Utama,Nasi Nugget Sambel Matah,15000,100
+Makanan Utama,Nasi Nugget Mayonnaise,9800,100
+Makanan Utama,Nasi Goreng Jawa,18100,100
+Makanan Utama,Capcay (Polos/Bakso/Sosis),9900,100
+Soup & Salad,Cream Soup Jagung/Jamur,11900,100
+Soup & Salad,Zuppa Soup Jagung/Jamur,19900,100
+Soup & Salad,Salad Sayur,12700,100
+Soup & Salad,Salad Sayur Telur/Ayam,15000,100
+Dimsum & Siomay,3 Siomay (Saus Siomay),18200,100
+Dimsum & Siomay,2 Dimsum 1 Siomay,17800,100
+Dimsum & Siomay,3 Dimsum (Saus Dimsum),16500,100
+Aneka Pasta,Carbonara,15500,100
+Aneka Pasta,Bolognese,15500,100
+Aneka Pasta,Napoletana,18100,100
+Aneka Pasta,Aglio e Olio,19900,100
+Cemilan,Pisang Bakar,8900,100
+Cemilan,Pisang Goreng (6 Pcs),17200,100
+Cemilan,Cookies Cerita Lain (/Pcs),8200,100
+Cemilan,Roti Bakar,7200,100
+Cemilan,Tiramisu (1 Slice),15000,100
+Cemilan,Breadsticks Cerita Lain,9700,100
+Cemilan,Garlic Bread,15000,100
+Cemilan,Bakwan Sayur (5 Pcs),9100,100
+Cemilan,Cireng (5 Pcs),15000,100
+Cemilan,French Fries,9900,100
+Cemilan,French Fries Mentai,12700,100
+Cemilan,Mix Platter,26000,100
+Mie,Mie Instant (Rebus/Goreng),8100,100
+Mie,Mie Nyemek Ala Jawa,18100,100
+Kopi,Americano Reguler,10700,100
+Kopi,Americano Large,15800,100
+Kopi,Coffee Latte Reguler,15800,100
+Kopi,Coffee Latte Large,21800,100
+Kopi,Coffee Latte Gula Aren Reg,17200,100
+Kopi,Caramel Coffee Latte Reg,23600,100
+Kopi,Hazelnut Coffee Latte Reg,23600,100
+Kopi,Butterscotch Reguler,19900,100
+Kopi,Traditional Coffee,8100,100
+Non-Kopi,Es Teh Tawar Reguler,3000,100
+Non-Kopi,Es Teh Manis Reguler,5000,100
+Non-Kopi,Teh Jahe,8500,100
+Non-Kopi,Jahe Original,11800,100
+Non-Kopi,Jeruk Nipis,9900,100
+Non-Kopi,Special Tea,15000,100
+Non-Kopi,Soda Gelato,11800,100
+Non-Kopi,Soda Susu,9900,100
+Non-Kopi,Vegetable Smoothie,15000,100
+Non-Kopi,Lime Mocktail,8100,100
+Non-Kopi,Milkshake Chocolate,15000,100
+Non-Kopi,Teh Tarik,15000,100
+Non-Kopi,Matcha Milk Reguler,17500,100
