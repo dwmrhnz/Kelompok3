@@ -1,151 +1,185 @@
 import os
-
-# Import class dari folder modules buatan Fardhan dan Hirzi
+from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
 from modules.linkedlist_menu import LinkedListMenu
 from modules.queue_antrean import QueuePesanan
 
+console = Console()
+
 def bersihkan_layar():
-    """Fungsi untuk membersihkan layar terminal agar tampilan rapi."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def main():
-    # 1. INISIALISASI OBJEK
     daftar_menu = LinkedListMenu()
     antrean_kasir = QueuePesanan()
 
-    # Memastikan folder data ada (mencegah error jika folder belum dibuat)
     if not os.path.exists('data'):
         os.makedirs('data')
 
-    # Memuat data dari file txt ke dalam Linked List saat aplikasi pertama dibuka
     lokasi_file_txt = "data/menu.txt"
     daftar_menu.muat_dari_txt(lokasi_file_txt)
     
-    input("\nTekan Enter untuk masuk ke aplikasi...")
+    input("\nTekan Enter untuk masuk ke aplikasi Sariawam...")
 
-    # 2. MENU UTAMA (CUSTOMER VIEW)
     while True:
         bersihkan_layar()
-        print("=========================================")
-        print("       SELAMAT DATANG DI McDawam")
-        print("=========================================")
-        print("-- Silakan Pilih Layanan --")
-        print("1. Tampilkan Menu Utama")
-        print("2. Ambil Nomor Antrean")
-        print("3. Tampilkan Antrean Saat Ini")
-        print("4. Menuju Kasir (Panggil Antrean)")
-        print("5. Keluar")
-        print("=========================================")
+        # Panel Judul menggunakan rich
+        judul = Panel(
+            Align.center("[bold yellow]SELAMAT DATANG DI RESTORAN SARIAWAM[/bold yellow]\n[italic white]Fardhan BianSA - HiRzI HAidi - DaWAM[/italic white]"),
+            style="bold cyan",
+            width=65
+        )
+        console.print(judul)
+        
+        console.print("\n[bold cyan]-- Silakan Pilih Layanan --[/bold cyan]")
+        console.print("[1] Tampilkan Menu & Cari")
+        console.print("[2] Ambil Nomor Antrean")
+        console.print("[3] Tampilkan Antrean Saat Ini")
+        console.print("[4] Menuju Kasir (Melayani Pelanggan)")
+        console.print("[5] Keluar\n")
 
         pilihan = input(">> Masukkan pilihan Anda: ").strip()
 
         if pilihan == '1':
-            bersihkan_layar()
-            print("--- TAMPILKAN MENU ---")
-            urutkan = input("Apakah Anda ingin mengurutkan menu berdasarkan harga termurah? (y/n): ").strip().lower()
-            
-            if urutkan == 'y':
-                daftar_menu.urutkan_harga(ascending=True)
-                print("\n[INFO] Menu telah diurutkan dari termurah ke termahal.\n")
-            
-            # Panggil fungsi Read buatan Fardhan
-            daftar_menu.tampilkan_menu()
-            input("\nTekan Enter untuk kembali ke Menu Utama...")
-
+            while True: # Sub-menu untuk Tampilkan Menu
+                bersihkan_layar()
+                daftar_menu.tampilkan_menu()
+                
+                console.print("\n[bold cyan]-- Opsi Menu --[/bold cyan]")
+                console.print("[1] Cari Hidangan (Ketik Nama)")
+                console.print("[2] Urutkan Harga Termahal - Termurah")
+                console.print("[3] Urutkan Harga Termurah - Termahal")
+                console.print("[0] Kembali ke Layanan Utama")
+                
+                opsi_menu = input(">> Pilih opsi: ").strip()
+                
+                if opsi_menu == '1':
+                    kata = input("Masukkan kata kunci pencarian: ").strip()
+                    hasil = daftar_menu.cari_menu_sebagian(kata)
+                    console.print(f"\n[bold green]Hasil Pencarian untuk '{kata}':[/bold green]")
+                    if hasil:
+                        for h in hasil:
+                            console.print(f"- {h.nama} ([yellow]Rp{h.harga}[/yellow])")
+                    else:
+                        console.print("[red]Menu tidak ditemukan.[/red]")
+                    input("\nTekan Enter untuk melanjutkan...")
+                    
+                elif opsi_menu == '2':
+                    daftar_menu.urutkan_harga(ascending=False) # Termahal
+                    console.print("[green]Menu telah diurutkan dari yang termahal.[/green]")
+                    input("Tekan Enter untuk melihat...")
+                    
+                elif opsi_menu == '3':
+                    daftar_menu.urutkan_harga(ascending=True) # Termurah
+                    console.print("[green]Menu telah diurutkan dari yang termurah.[/green]")
+                    input("Tekan Enter untuk melihat...")
+                    
+                elif opsi_menu == '0':
+                    break # Kembali ke while True utama
+                    
         elif pilihan == '2':
             bersihkan_layar()
-            print("--- AMBIL NOMOR ANTREAN ---")
+            console.print("[bold cyan]--- AMBIL NOMOR ANTREAN ---[/bold cyan]")
             nama = input("Masukkan Nama Anda: ").strip()
-            
-            if not nama:
-                print("[ERROR] Nama tidak boleh kosong!")
-            else:
-                print("\nPilih Tipe Pesanan:")
-                print("1. Dine-in (Makan di tempat)")
-                print("2. Takeaway (Bawa pulang)")
+            if nama:
+                console.print("Pilih Tipe: [1] Dine-in  [2] Takeaway")
                 tipe_input = input("Pilihan (1/2): ").strip()
-                
-                # Validasi tipe pesanan
-                if tipe_input == '1':
-                    tipe = "Dine-in"
-                elif tipe_input == '2':
-                    tipe = "Takeaway"
-                else:
-                    tipe = "Dine-in" # Default jika input ngawur
-                    print("[WARNING] Pilihan tidak valid, otomatis diset ke 'Dine-in'.")
-                
-                # Panggil fungsi Enqueue buatan Hirzi
+                tipe = "Takeaway" if tipe_input == '2' else "Dine-in"
                 antrean_kasir.ambil_antrean(nama, tipe)
-                
-            input("\nTekan Enter untuk kembali ke Menu Utama...")
+            input("\nTekan Enter kembali...")
 
         elif pilihan == '3':
             bersihkan_layar()
-            # Panggil fungsi lihat Queue buatan Hirzi
             antrean_kasir.tampilkan_antrean()
-            input("Tekan Enter untuk kembali ke Menu Utama...")
+            input("Tekan Enter kembali...")
 
         elif pilihan == '4':
             bersihkan_layar()
-            # Panggil fungsi Dequeue dan transaksi buatan Hirzi
-            # Parameter daftar_menu dilempar agar Hirzi bisa memotong stok
             antrean_kasir.layani_pelanggan(daftar_menu)
-            
-            # Karena di layani_pelanggan path file default Hirzi mungkin 'menu.txt', 
-            # kita force save di sini agar aman dan rapi masuk folder data/
-            antrean_kasir.simpan_data_ke_txt(daftar_menu, lokasi_file_txt)
-            input("\nTekan Enter untuk kembali ke Menu Utama...")
+            input("\nTekan Enter kembali...")
 
         elif pilihan == '5':
             bersihkan_layar()
-            print("Terima kasih telah berkunjung ke McDawam. Sampai jumpa!")
+            console.print("[bold green]Terima kasih telah berkunjung ke Sariawam. Sampai jumpa![/bold green]")
             break
 
-        # 3. MODE ADMIN TERSEMBUNYI (CRUD)
-        elif pilihan == '99':
+        # KODE ADMIN BARU
+        elif pilihan == '67':
             while True:
                 bersihkan_layar()
-                print("=========================================")
-                print("           *** MODE ADMIN *** ")
-                print("=========================================")
-                print("1. Tambah Menu Baru")
-                print("2. Keluar ke Menu Utama")
-                print("=========================================")
+                admin_panel = Panel(Align.center("[bold red]*** MODE ADMIN SARIAWAM ***[/bold red]"), width=65)
+                console.print(admin_panel)
+                console.print("[1] Tambah Menu Baru (Create)")
+                console.print("[2] Ubah Harga/Stok Menu (Update)")
+                console.print("[3] Hapus Menu (Delete)")
+                console.print("[0] Keluar ke Menu Utama\n")
                 
                 admin_pilihan = input(">> Pilih aksi admin: ").strip()
 
                 if admin_pilihan == '1':
-                    bersihkan_layar()
-                    print("--- TAMBAH MENU BARU ---")
-                    jenis = input("Masukkan Jenis (Contoh: Makanan/Minuman/Dessert): ").strip()
-                    nama_menu = input("Masukkan Nama Menu: ").strip()
-                    
-                    # 4. ATURAN PENGAMANAN (Try-Except untuk angka)
+                    jenis = input("Jenis (Makanan Utama/Kopi/dll): ")
+                    nama_menu = input("Nama Menu: ")
                     try:
-                        harga = int(input("Masukkan Harga (angka): ").strip())
-                        stok = int(input("Masukkan Stok Awal (angka): ").strip())
-                        
-                        # Panggil fungsi Create buatan Fardhan
+                        harga = int(input("Harga: "))
+                        stok = int(input("Stok: "))
                         daftar_menu.tambah_di_akhir(jenis, nama_menu, harga, stok)
-                        print(f"\n[SUKSES] Menu '{nama_menu}' berhasil ditambahkan!")
-                        
-                        # Simpan pembaruan ke TXT menggunakan fungsi Hirzi
                         antrean_kasir.simpan_data_ke_txt(daftar_menu, lokasi_file_txt)
-                        
+                        console.print("[green]Berhasil ditambah![/green]")
                     except ValueError:
-                        print("\n[ERROR] Harga dan Stok harus berupa angka! Penambahan dibatalkan.")
+                        console.print("[red]Harga/Stok harus angka![/red]")
+                    input("Tekan Enter...")
+                
+                elif admin_pilihan == '2': # FITUR UPDATE
+                    nama_ubah = input("Masukkan nama menu yang ingin diubah: ").strip()
+                    node = daftar_menu.cari_menu(nama_ubah)
+                    if node:
+                        console.print(f"Data saat ini -> Harga: {node.harga}, Stok: {node.stok}")
+                        try:
+                            hrg_baru = input("Harga baru (kosongkan jika tidak ingin diubah): ")
+                            stk_baru = input("Stok baru (kosongkan jika tidak ingin diubah): ")
+                            if hrg_baru: node.harga = int(hrg_baru)
+                            if stk_baru: node.stok = int(stk_baru)
+                            antrean_kasir.simpan_data_ke_txt(daftar_menu, lokasi_file_txt)
+                            console.print("[green]Berhasil diubah![/green]")
+                        except ValueError:
+                            console.print("[red]Input harus angka![/red]")
+                    else:
+                        console.print("[red]Menu tidak ditemukan![/red]")
+                    input("Tekan Enter...")
+                
+                elif admin_pilihan == '3': # FITUR DELETE
+                    nama_hapus = input("Masukkan nama menu yang ingin dihapus: ").strip()
                     
-                    input("\nTekan Enter untuk kembali ke Menu Admin...")
+                    # Logika Delete Linked List (Langsung di main atau oper ke Fardhan)
+                    # Karena Fardhan belum buat, kita handle bypass di sini:
+                    current = daftar_menu.head
+                    prev = None
+                    ditemukan = False
                     
-                elif admin_pilihan == '2':
-                    break # Keluar dari loop admin, kembali ke menu utama
-                else:
-                    print("\n[ERROR] Pilihan admin tidak valid!")
-                    input("Tekan Enter untuk mengulangi...")
+                    while current:
+                        if current.nama.lower() == nama_hapus.lower():
+                            ditemukan = True
+                            if prev: # Jika ada di tengah/akhir
+                                prev.next = current.next
+                            else: # Jika head yang dihapus
+                                daftar_menu.head = current.next
+                            break
+                        prev = current
+                        current = current.next
+                        
+                    if ditemukan:
+                        antrean_kasir.simpan_data_ke_txt(daftar_menu, lokasi_file_txt)
+                        console.print(f"[green]Menu '{nama_hapus}' berhasil dihapus![/green]")
+                    else:
+                        console.print("[red]Menu tidak ditemukan![/red]")
+                    input("Tekan Enter...")
 
+                elif admin_pilihan == '0':
+                    break
         else:
-            print("\n[ERROR] Pilihan tidak valid. Silakan masukkan angka 1-5.")
-            input("Tekan Enter untuk melanjutkan...")
+            console.print("\n[red]Pilihan tidak valid.[/red]")
+            input("Tekan Enter...")
 
 if __name__ == "__main__":
     main()

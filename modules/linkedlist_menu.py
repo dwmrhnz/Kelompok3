@@ -1,3 +1,8 @@
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+from rich import box
+
 class NodeMenu:
     """
     Class ini merepresentasikan satu entitas (node) menu di dalam Linked List.
@@ -60,14 +65,12 @@ class LinkedListMenu:
             print(f"[ERROR] File {nama_file} tidak ditemukan!")
 
     def tampilkan_menu(self):
-        """
-        Mencetak daftar menu ke terminal dalam format tabel, dikelompokkan berdasarkan jenis.
-        """
+        """Mencetak daftar menu dengan library rich (4 Kolom)"""
+        console = Console()
         if not self.head:
-            print("Daftar menu masih kosong.")
+            console.print("[bold red]Daftar menu masih kosong.[/bold red]")
             return
 
-        # Mengelompokkan menu berdasarkan jenis ke dalam dictionary (hanya untuk rapi saat print)
         kategori_menu = {}
         current = self.head
         while current:
@@ -76,18 +79,40 @@ class LinkedListMenu:
             kategori_menu[current.jenis].append(current)
             current = current.next
 
-        # Mencetak dengan format tabel yang rapi
-        print("=" * 65)
-        print(f"{'DAFTAR MENU RESTORAN CERITA LAIN':^65}")
-        print("=" * 65)
+        # Membuat tabel utama (tanpa garis luar)
+        table = Table(show_header=False, box=box.SIMPLE, expand=True)
+        for _ in range(4): # 4 Kolom sesuai permintaan
+            table.add_column(justify="left", ratio=1)
+
+        nama_kategori = list(kategori_menu.keys())
         
-        for jenis, items in kategori_menu.items():
-            print(f"\n[ KATEGORI: {jenis.upper()} ]")
-            print(f"{'Nama Menu':<35} | {'Harga':<10} | {'Stok':<5}")
-            print("-" * 58)
-            for item in items:
-                print(f"{item.nama:<35} | Rp{item.harga:<8} | {item.stok:<5}")
-        print("=" * 65)
+        # Memecah kategori menjadi per 4 kolom
+        for i in range(0, len(nama_kategori), 4):
+            chunk = nama_kategori[i:i+4]
+            
+            # Baris untuk Judul Kategori
+            judul_cols = [f"[bold cyan]-- {k.upper()} --[/bold cyan]" for k in chunk]
+            # Menambah padding kosong jika kategori kurang dari 4 di baris terakhir
+            while len(judul_cols) < 4:
+                judul_cols.append("")
+            table.add_row(*judul_cols)
+            
+            # Baris untuk Isi Menu
+            isi_cols = []
+            for k in chunk:
+                teks_menu = ""
+                for item in kategori_menu[k]:
+                    # Hanya menampilkan nama dan harga, stok disembunyikan
+                    teks_menu += f"[white]{item.nama}[/white]\n[yellow]Rp{item.harga}[/yellow]\n\n"
+                isi_cols.append(teks_menu.strip())
+            
+            while len(isi_cols) < 4:
+                isi_cols.append("")
+            table.add_row(*isi_cols)
+            table.add_row("", "", "", "") # Spasi antar baris kategori
+
+        panel = Panel(table, title="[bold magenta] DAFTAR MENU SARIAWAM [/bold magenta]", border_style="magenta")
+        console.print(panel)
 
     def cari_menu(self, nama_menu):
         """
@@ -101,6 +126,16 @@ class LinkedListMenu:
                 return current
             current = current.next
         return None
+
+    def cari_menu_sebagian(self, keyword):
+        """Mencari menu yang mengandung kata kunci (partial match)"""
+        hasil = []
+        current = self.head
+        while current:
+            if keyword.lower() in current.nama.lower():
+                hasil.append(current)
+            current = current.next
+        return hasil
 
     def urutkan_harga(self, ascending=True):
         """

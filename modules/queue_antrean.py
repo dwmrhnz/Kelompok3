@@ -1,4 +1,5 @@
 import os
+from rich.console import Console
 
 class QueuePesanan:
     """
@@ -59,101 +60,105 @@ class QueuePesanan:
         print("======================\n")
 
     def layani_pelanggan(self, menu_list):
-        """
-        Fitur Dequeue: Memanggil dan melayani pelanggan antrean pertama.
-        
-        Args:
-            menu_list (object): Objek Linked List yang berisi daftar menu.
-            
-        Untuk Dawam: 
-        1. Pastikan objek Linked List milikmu dilempar ke dalam parameter fungsi ini.
-        2. Pastikan objek Linked List milikmu memiliki fungsi:
-           - cari_menu(nama_menu) -> return tuple/list (harga, stok) atau None jika tidak ketemu.
-           - kurangi_stok(nama_menu, jumlah) -> tidak perlu return, hanya mengurangi stok di Linked List.
-        """
+        console = Console()
         if len(self.antrian) == 0:
-            print("\n[INFO] Tidak ada pelanggan dalam antrean untuk dilayani.")
+            console.print("\n[bold yellow][INFO] Tidak ada pelanggan dalam antrean untuk dilayani.[/bold yellow]")
             return
 
-        # Dequeue: Mengambil dan menghapus pelanggan di urutan pertama (index 0)
-        pelanggan = self.antrian.pop(0)
+        pelanggan = self.antrian[0] # Jangan di-pop dulu, pop jika sudah konfirmasi 'y'
         
-        print("\n" + "="*40)
-        print(f"    MELAYANI PELANGGAN NOMOR: {pelanggan['nomor']}")
-        print(f"    Nama: {pelanggan['nama']} | Tipe: {pelanggan['tipe']}")
-        print("="*40)
+        # Tampilkan menu sebelum melayani
+        menu_list.tampilkan_menu()
         
-        keranjang = []
-        total_belanja = 0
+        console.print(f"\n[bold green]>>> MELAYANI PELANGGAN NOMOR: {pelanggan['nomor']} ({pelanggan['nama']} - {pelanggan['tipe']})[/bold green]")
+        console.print("[italic cyan]*PENTING: Ketik nama menu sesuai dengan yang ada di daftar. Tekan ENTER kosong jika sudah selesai memesan.*[/italic cyan]\n")
+        
+        while True: # Loop Utama Transaksi
+            keranjang = []
+            total_belanja = 0
+            # Salinan stok sementara untuk transaksi ini (mencegah stok habis kalau user batal)
+            stok_sementara = {} 
 
-        # Simulasi dialog kasir
-        while True:
-            pesanan = input("\nKasir: 'Ingin pesan apa kak? (Ketik 'selesai' jika sudah cukup): ' ").strip()
-            
-            if pesanan.lower() == 'selesai':
+            while True: # Loop Pemesanan Item
+                pesanan = input("Kasir: 'Ingin pesan apa kak?' (Tekan ENTER untuk selesai): ").strip()
+                
+                if pesanan == '': # Selesai memesan
+                    break
+                    
+                hasil_pencarian = menu_list.cari_menu(pesanan)
+                if hasil_pencarian is None:
+                    console.print(f"[bold red][GAGAL] Maaf, menu '{pesanan}' tidak ditemukan. Cek ejaanmu![/bold red]")
+                    continue
+                    
+                # Ambil stok dari stok_sementara jika ada, jika tidak ambil dari database
+                stok_saat_ini = stok_sementara.get(pesanan, hasil_pencarian.stok)
+                harga_menu = hasil_pencarian.harga
+                
+                if stok_saat_ini <= 0:
+                    console.print(f"[bold red][GAGAL] Maaf, stok untuk '{pesanan}' sedang habis.[/bold red]")
+                    continue
+                    
+                try:
+                    jumlah_pesan = int(input(f"Berapa porsi {pesanan}? (Tersedia: {stok_saat_ini}): "))
+                except ValueError:
+                    console.print("[bold red][ERROR] Masukkan harus angka![/bold red]")
+                    continue
+                    
+                if jumlah_pesan <= 0 or jumlah_pesan > stok_saat_ini:
+                    console.print(f"[bold red][GAGAL] Jumlah tidak valid atau melebihi stok.[/bold red]")
+                    continue
+                    
+                # Masukkan ke keranjang
+                stok_sementara[pesanan] = stok_saat_ini - jumlah_pesan
+                subtotal = harga_menu * jumlah_pesan
+                total_belanja += subtotal
+                
+                keranjang.append({
+                    "menu": hasil_pencarian.nama, # Simpan nama asli
+                    "jumlah": jumlah_pesan,
+                    "harga_satuan": harga_menu,
+                    "subtotal": subtotal
+                })
+                console.print(f"[bold green] + Berhasil menambah {jumlah_pesan}x {hasil_pencarian.nama}[/bold green]\n")
+
+            # --- FASE KONFIRMASI ---
+            if not keranjang:
+                console.print("[yellow][INFO] Pelanggan tidak memesan apa pun.[/yellow]")
+                self.antrian.pop(0) # Buang dari antrean
                 break
-                
-            # Cek ke Linked List Dawam apakah menu ada
-            hasil_pencarian = menu_list.cari_menu(pesanan)
-            
-            if hasil_pencarian is None:
-                print(f"[GAGAL] Maaf, menu '{pesanan}' tidak ditemukan di sistem.")
-                continue
-                
-            harga_menu = hasil_pencarian.harga
-            stok_menu = hasil_pencarian.stok
-            
-            if stok_menu <= 0:
-                print(f"[GAGAL] Maaf, stok untuk menu '{pesanan}' sedang habis/kosong.")
-                continue
-                
-            # Validasi input jumlah menggunakan try-except
-            try:
-                jumlah_pesan = int(input(f"Kasir: 'Mau pesan {pesanan} berapa banyak? (Stok tersisa: {stok_menu}): ' "))
-            except ValueError:
-                print("[ERROR] Masukkan harus berupa angka! Silakan ulangi pesanan.")
-                continue
-                
-            if jumlah_pesan <= 0:
-                print("[ERROR] Jumlah pesanan minimal 1.")
-                continue
-                
-            if jumlah_pesan > stok_menu:
-                print(f"[GAGAL] Stok tidak mencukupi. Hanya bisa pesan maksimal {stok_menu}.")
-                continue
-                
-            # Proses pesanan berhasil
-            menu_list.kurangi_stok(pesanan, jumlah_pesan)
-            subtotal = harga_menu * jumlah_pesan
-            total_belanja += subtotal
-            
-            keranjang.append({
-                "menu": pesanan,
-                "jumlah": jumlah_pesan,
-                "harga_satuan": harga_menu,
-                "subtotal": subtotal
-            })
-            print(f"[SUKSES] Berhasil menambahkan {jumlah_pesan}x {pesanan} ke keranjang.")
 
-        # Cetak Struk jika pelanggan jadi membeli sesuatu
-        if keranjang:
-            print("\n" + "-"*40)
-            print("             STRUK PEMBELIAN")
-            print("-"*40)
-            print(f"Pelanggan: {pelanggan['nama']} ({pelanggan['tipe']})")
-            print("-"*40)
+            console.print("\n[bold cyan]--- REVIEW PESANAN ---[/bold cyan]")
             for item in keranjang:
-                print(f"{item['menu']} (x{item['jumlah']})")
-                print(f"  @ Rp{item['harga_satuan']} -> Rp{item['subtotal']}")
-            print("-"*40)
-            print(f"TOTAL BAYAR: Rp{total_belanja}")
-            print("-"*40)
-            print("Terima kasih telah berkunjung!\n")
+                console.print(f"- {item['menu']} (x{item['jumlah']}) : Rp{item['subtotal']}")
+            console.print(f"[bold yellow]TOTAL BAYAR: Rp{total_belanja}[/bold yellow]")
             
-            # Panggil fungsi simpan untuk mengupdate file txt setiap selesai transaksi
-            self.simpan_data_ke_txt(menu_list)
-        else:
-            print(f"\n[INFO] Pelanggan {pelanggan['nama']} tidak jadi memesan apa pun.")
+            yakin = input("\nApakah pesanan sudah benar? (y/n): ").strip().lower()
+            if yakin == 'y':
+                # Potong stok beneran di Linked List
+                for item in keranjang:
+                    menu_list.kurangi_stok(item['menu'], item['jumlah'])
+                
+                self.antrian.pop(0) # Selesai, buang dari antrean
+                self._cetak_struk(pelanggan, keranjang, total_belanja)
+                self.simpan_data_ke_txt(menu_list)
+                break
+            else:
+                console.print("[bold yellow]Baik, mari kita ulang pesanannya dari awal...[/bold yellow]\n")
+                # Loop utama akan berulang, keranjang reset.
+    
+    def _cetak_struk(self, pelanggan, keranjang, total_belanja):
+        """Fungsi internal untuk mencetak struk (dipisah agar rapi)"""
+        console = Console()
+        console.print("\n[bold white on black]          STRUK PEMBELIAN SARIAWAM          [/bold white on black]")
+        console.print(f"Pelanggan: {pelanggan['nama']} ({pelanggan['tipe']})")
+        console.print("-" * 44)
+        for item in keranjang:
+            console.print(f"{item['menu']} (x{item['jumlah']})")
+            console.print(f"  @ Rp{item['harga_satuan']:<15} Rp{item['subtotal']}")
+        console.print("-" * 44)
+        console.print(f"[bold green]TOTAL BAYAR: Rp{total_belanja}[/bold green]")
+        console.print("-" * 44)
+        console.print("       Terima kasih telah berkunjung!       \n")
 
     def simpan_data_ke_txt(self, menu_list, nama_file="menu.txt"):
         """
