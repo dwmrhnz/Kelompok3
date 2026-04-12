@@ -102,8 +102,9 @@ class LinkedListMenu:
             for k in chunk:
                 teks_menu = ""
                 for item in kategori_menu[k]:
-                    # Hanya menampilkan nama dan harga, stok disembunyikan
-                    teks_menu += f"[white]{item.nama}[/white]\n[yellow]Rp{item.harga}[/yellow]\n\n"
+                    # Menggunakan :, untuk ribuan dan replace untuk mengubah koma ke titik
+                    harga_format = f"Rp{item.harga:,}".replace(",", ".")
+                    teks_menu += f"[white]{item.nama}[/white]\n[yellow]{harga_format}[/yellow]\n\n"
                 isi_cols.append(teks_menu.strip())
             
             while len(isi_cols) < 4:

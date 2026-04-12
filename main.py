@@ -26,7 +26,7 @@ def main():
         bersihkan_layar()
         # Panel Judul menggunakan rich
         judul = Panel(
-            Align.center("[bold yellow]SELAMAT DATANG DI RESTORAN SARIAWAM[/bold yellow]\n[italic white]Fardhan BianSA - HiRzI HAidi - DaWAM[/italic white]"),
+            Align.center("[bold yellow]SELAMAT DATANG DI RESTORAN SARIAWAM[/bold yellow]\n[italic white]Fardhan - Hirzi - Dawam[/italic white]"),
             style="bold cyan",
             width=65
         )
@@ -60,7 +60,8 @@ def main():
                     console.print(f"\n[bold green]Hasil Pencarian untuk '{kata}':[/bold green]")
                     if hasil:
                         for h in hasil:
-                            console.print(f"- {h.nama} ([yellow]Rp{h.harga}[/yellow])")
+                            harga_format = f"Rp{h.harga:,}".replace(",", ".")
+                            console.print(f"- {h.nama} ([yellow]{harga_format}[/yellow])")
                     else:
                         console.print("[red]Menu tidak ditemukan.[/red]")
                     input("\nTekan Enter untuk melanjutkan...")
@@ -141,7 +142,9 @@ def main():
                             if hrg_baru: node.harga = int(hrg_baru)
                             if stk_baru: node.stok = int(stk_baru)
                             antrean_kasir.simpan_data_ke_txt(daftar_menu, lokasi_file_txt)
+                            harga_skrg = f"Rp{node.harga:,}".replace(",", ".")
                             console.print("[green]Berhasil diubah![/green]")
+                            console.print(f"Data saat ini -> Harga: [yellow]{harga_skrg}[/yellow], Stok: {node.stok}")
                         except ValueError:
                             console.print("[red]Input harus angka![/red]")
                     else:

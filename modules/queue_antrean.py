@@ -129,7 +129,8 @@ class QueuePesanan:
 
             console.print("\n[bold cyan]--- REVIEW PESANAN ---[/bold cyan]")
             for item in keranjang:
-                console.print(f"- {item['menu']} (x{item['jumlah']}) : Rp{item['subtotal']}")
+                subtotal_format = f"Rp{item['subtotal']:,}".replace(",", ".")
+                console.print(f"- {item['menu']} (x{item['jumlah']}) : [yellow]{subtotal_format}[/yellow]")
             console.print(f"[bold yellow]TOTAL BAYAR: Rp{total_belanja}[/bold yellow]")
             
             yakin = input("\nApakah pesanan sudah benar? (y/n): ").strip().lower()
@@ -153,10 +154,13 @@ class QueuePesanan:
         console.print(f"Pelanggan: {pelanggan['nama']} ({pelanggan['tipe']})")
         console.print("-" * 44)
         for item in keranjang:
+            h_satuan = f"Rp{item['harga_satuan']:,}".replace(",", ".")
+            s_total = f"Rp{item['subtotal']:,}".replace(",", ".")
             console.print(f"{item['menu']} (x{item['jumlah']})")
-            console.print(f"  @ Rp{item['harga_satuan']:<15} Rp{item['subtotal']}")
+            console.print(f"  @ {h_satuan:<15} {s_total}")
         console.print("-" * 44)
-        console.print(f"[bold green]TOTAL BAYAR: Rp{total_belanja}[/bold green]")
+        total_format = f"Rp{total_belanja:,}".replace(",", ".")
+        console.print(f"[bold green]TOTAL BAYAR: {total_format}[/bold green]")
         console.print("-" * 44)
         console.print("       Terima kasih telah berkunjung!       \n")
 

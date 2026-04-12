@@ -1,55 +1,38 @@
-Makanan Utama,Nasi Ayam Sambal Lalap,18100,100
-Makanan Utama,Nasi Ayam Kuah Opor,15500,100
-Makanan Utama,Nasi Abon,9100,100
-Makanan Utama,Nasi Abon Telor,12500,100
-Makanan Utama,Nasi Nugget Sambel Matah,15000,100
-Makanan Utama,Nasi Nugget Mayonnaise,9800,100
-Makanan Utama,Nasi Goreng Jawa,18100,100
-Makanan Utama,Capcay (Polos/Bakso/Sosis),9900,100
-Soup & Salad,Cream Soup Jagung/Jamur,11900,100
-Soup & Salad,Zuppa Soup Jagung/Jamur,19900,100
-Soup & Salad,Salad Sayur,12700,100
-Soup & Salad,Salad Sayur Telur/Ayam,15000,100
-Dimsum & Siomay,3 Siomay (Saus Siomay),18200,100
-Dimsum & Siomay,2 Dimsum 1 Siomay,17800,100
-Dimsum & Siomay,3 Dimsum (Saus Dimsum),16500,100
-Aneka Pasta,Carbonara,15500,100
-Aneka Pasta,Bolognese,15500,100
-Aneka Pasta,Napoletana,18100,100
-Aneka Pasta,Aglio e Olio,19900,100
-Cemilan,Pisang Bakar,8900,100
-Cemilan,Pisang Goreng (6 Pcs),17200,100
-Cemilan,Cookies Cerita Lain (/Pcs),8200,100
-Cemilan,Roti Bakar,7200,100
-Cemilan,Tiramisu (1 Slice),15000,100
-Cemilan,Breadsticks Cerita Lain,9700,100
-Cemilan,Garlic Bread,15000,100
-Cemilan,Bakwan Sayur (5 Pcs),9100,100
-Cemilan,Cireng (5 Pcs),15000,100
-Cemilan,French Fries,9900,100
-Cemilan,French Fries Mentai,12700,100
-Cemilan,Mix Platter,26000,100
-Mie,Mie Instant (Rebus/Goreng),8100,100
-Mie,Mie Nyemek Ala Jawa,18100,100
-Kopi,Americano Reguler,10700,100
-Kopi,Americano Large,15800,100
-Kopi,Coffee Latte Reguler,15800,100
-Kopi,Coffee Latte Large,21800,100
-Kopi,Coffee Latte Gula Aren Reg,17200,100
-Kopi,Caramel Coffee Latte Reg,23600,100
-Kopi,Hazelnut Coffee Latte Reg,23600,100
-Kopi,Butterscotch Reguler,19900,100
-Kopi,Traditional Coffee,8100,100
-Non-Kopi,Es Teh Tawar Reguler,3000,100
-Non-Kopi,Es Teh Manis Reguler,5000,100
-Non-Kopi,Teh Jahe,8500,100
-Non-Kopi,Jahe Original,11800,100
-Non-Kopi,Jeruk Nipis,9900,100
-Non-Kopi,Special Tea,15000,100
-Non-Kopi,Soda Gelato,11800,100
-Non-Kopi,Soda Susu,9900,100
-Non-Kopi,Vegetable Smoothie,15000,100
-Non-Kopi,Lime Mocktail,8100,100
-Non-Kopi,Milkshake Chocolate,15000,100
-Non-Kopi,Teh Tarik,15000,100
-Non-Kopi,Matcha Milk Reguler,17500,100
+Makanan Utama,Nasi Ayam Bakar,20000,30
+Makanan Utama,Nasi Ayam Goreng,18000,45
+Makanan Utama,Nasi Goreng Spesial,22000,25
+Makanan Utama,Nasi Goreng Sosis,15000,40
+Makanan Utama,Nasi Telur Dadar,12000,50
+Makanan Utama,Nasi Gila,18000,20
+Makanan Utama,Ayam Geprek,16000,40
+Makanan Utama,Pecel Lele,15000,25
+Soup & Salad,Sup Krim Jagung,15000,20
+Soup & Salad,Sup Krim Jamur,15000,18
+Soup & Salad,Salad Sayur,12000,30
+Soup & Salad,Salad Ayam,18000,25
+Dimsum & Siomay,Siomay Ayam,15000,40
+Dimsum & Siomay,Siomay Udang,18000,35
+Dimsum & Siomay,Dimsum Ayam,15000,45
+Dimsum & Siomay,Dimsum Udang,18000,30
+Aneka Pasta,Spaghetti Bolognese,20000,25
+Aneka Pasta,Spaghetti Carbonara,22000,20
+Aneka Pasta,Macaroni Keju,18000,15
+Aneka Pasta,Lasagna Sapi,25000,10
+Cemilan,Kentang Goreng,12000,50
+Cemilan,Roti Bakar,10000,40
+Cemilan,Pisang Goreng,10000,45
+Cemilan,Cireng,8000,50
+Mie,Mie Goreng,10000,50
+Mie,Mie Rebus,10000,50
+Mie,Mie Nyemek,15000,35
+Mie,Kwetiau Goreng,16000,30
+Kopi,Kopi Hitam,10000,40
+Kopi,Kopi Susu,12000,45
+Kopi,Kopi Gula Aren,15000,50
+Kopi,Cappuccino,18000,30
+Kopi,Kopi Karamel,20000,25
+Non-Kopi,Es Teh Manis,5000,50
+Non-Kopi,Es Jeruk,8000,45
+Non-Kopi,Teh Tarik,12000,35
+Non-Kopi,Susu Coklat,15000,30
+Non-Kopi,Matcha Latte,18000,20
