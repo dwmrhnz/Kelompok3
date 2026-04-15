@@ -40,17 +40,18 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
     python main.py
 
 ## 📂 Struktur Direktori
-Kelompok3/
-│
-├── data/
-│   └── menu.txt                 # Database utama (format txt)
-├── modules/
-│   ├── linkedlist_menu.py       # Logika struktur data Linked List
-│   └── queue_antrean.py         # Logika struktur data Queue & Transaksi
-├── struk/                       # Folder auto-generated untuk file PDF struk
-├── .gitignore                   # Konfigurasi pengabaian file Git
-├── main.py                      # File eksekusi utama aplikasi
-└── README.md                    # Dokumentasi proyek
+    ```bash
+    Kelompok3/
+    │
+    ├── data/
+    │   └── menu.txt                 # Database utama (format txt)
+    ├── modules/
+    │   ├── linkedlist_menu.py       # Logika struktur data Linked List
+    │   └── queue_antrean.py         # Logika struktur data Queue & Transaksi
+    ├── struk/                       # Folder auto-generated untuk file PDF struk
+    ├── .gitignore                   # Konfigurasi pengabaian file Git
+    ├── main.py                      # File eksekusi utama aplikasi
+    └── README.md                    # Dokumentasi proyek
 
 ## 🔒 Catatan Khusus
 Akses Admin: Untuk mengakses menu Admin, masukkan kode rahasia 67 pada menu layanan utama.
