@@ -28,7 +28,7 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
 
 1. Clone *repository* ini:
    ```bash
-   git clone [https://github.com/dwmrhnz/Kelompok3.git](https://github.com/dwmrhnz/Kelompok3.git)
+   git clone https://github.com/dwmrhnz/Kelompok3.git
    cd Kelompok3
    ```
 
