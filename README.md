@@ -30,16 +30,20 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
    ```bash
    git clone [https://github.com/dwmrhnz/Kelompok3.git](https://github.com/dwmrhnz/Kelompok3.git)
    cd Kelompok3
+   ```
 
 2. Instal pustaka yang dibutuhkan:
     ```bash
     pip install rich reportlab
+    ```
 
 3. Jalankan aplikasi
     ```bash
     python main.py
+    ```
 
 ## 📂 Struktur Direktori
+    ```bash
     Kelompok3/
     │
     ├── data/
@@ -51,6 +55,7 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
     ├── .gitignore                   # Konfigurasi pengabaian file Git
     ├── main.py                      # File eksekusi utama aplikasi
     └── README.md                    # Dokumentasi proyek
+    ```
 
 ## 🔒 Catatan Khusus
 Akses Admin: Untuk mengakses menu Admin, masukkan kode rahasia 67 pada menu layanan utama.
