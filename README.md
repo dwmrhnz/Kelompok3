@@ -33,29 +33,29 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
    ```
 
 2. Instal pustaka yang dibutuhkan:
-    ```bash
-    pip install rich reportlab
-    ```
+   ```bash
+   pip install rich reportlab
+   ```
 
-3. Jalankan aplikasi
-    ```bash
-    python main.py
-    ```
+3. Jalankan aplikasi:
+   ```bash
+   python main.py
+   ```
 
 ## 📂 Struktur Direktori
-    ```bash
-    Kelompok3/
-    │
-    ├── data/
-    │   └── menu.txt                 # Database utama (format txt)
-    ├── modules/
-    │   ├── linkedlist_menu.py       # Logika struktur data Linked List
-    │   └── queue_antrean.py         # Logika struktur data Queue & Transaksi
-    ├── struk/                       # Folder auto-generated untuk file PDF struk
-    ├── .gitignore                   # Konfigurasi pengabaian file Git
-    ├── main.py                      # File eksekusi utama aplikasi
-    └── README.md                    # Dokumentasi proyek
-    ```
+```text
+Kelompok3/
+│
+├── data/
+│   └── menu.txt                 # Database utama (format txt)
+├── modules/
+│   ├── linkedlist_menu.py       # Logika struktur data Linked List
+│   └── queue_antrean.py         # Logika struktur data Queue & Transaksi
+├── struk/                       # Folder auto-generated untuk file PDF struk
+├── .gitignore                   # Konfigurasi pengabaian file Git
+├── main.py                      # File eksekusi utama aplikasi
+└── README.md                    # Dokumentasi proyek
+```
 
 ## 🔒 Catatan Khusus
-Akses Admin: Untuk mengakses menu Admin, masukkan kode rahasia 67 pada menu layanan utama.
+- **Akses Admin:** Untuk mengakses menu Admin, masukkan kode rahasia `67` pada menu layanan utama.
