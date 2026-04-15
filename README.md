@@ -40,7 +40,6 @@ Sebelum menjalankan aplikasi ini, pastikan komputer Anda sudah terpasang Python 
     python main.py
 
 ## 📂 Struktur Direktori
-    ```bash
     Kelompok3/
     │
     ├── data/
