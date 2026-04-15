@@ -4,73 +4,62 @@ from rich.panel import Panel
 from rich import box
 
 class NodeMenu:
-    """
-    Class ini merepresentasikan satu entitas (node) menu di dalam Linked List.
-    Menyimpan atribut jenis, nama, harga, stok, dan pointer/referensi ke node berikutnya.
-    """
+    """ Blueprint buat tiap node menu di Linked List. """
     def __init__(self, jenis, nama, harga, stok):
         self.jenis = jenis
         self.nama = nama
-        self.harga = int(harga)  # Memastikan tipe data integer
-        self.stok = int(stok)    # Memastikan tipe data integer
-        self.next = None         # Pointer ke node berikutnya
+        self.harga = int(harga)  # casting ke int biar aman buat dihitung
+        self.stok = int(stok)    
+        self.next = None         # pointer ke node selanjutnya
 
 
 class LinkedListMenu:
-    """
-    Class ini mengelola struktur data Single Linked List untuk semua daftar menu.
-    Berisi kumpulan fungsi/method (CRUD dan Sorting) untuk diakses oleh modul lain.
-    """
+    """ Class utama buat operasi Single Linked List (CRUD & Sorting). """
     def __init__(self):
-        self.head = None  # Titik awal dari Linked List
+        self.head = None  # head awal kosong
 
     def tambah_di_akhir(self, jenis, nama, harga, stok):
-        """
-        Membuat node baru dan menambahkannya ke posisi paling belakang (tail) di Linked List.
-        """
+        """ Bikin node baru terus ditaruh di paling ujung (tail). """
         node_baru = NodeMenu(jenis, nama, harga, stok)
         
-        # Jika linked list masih kosong, jadikan node baru sebagai head
+        # kalo list masih kosong, node baru langsung jadi head
         if not self.head:
             self.head = node_baru
             return
         
-        # Jika tidak kosong, telusuri (traverse) sampai ke node terakhir
+        # traverse sampe nemu ujungnya
         current = self.head
         while current.next:
             current = current.next
         
-        # Sambungkan node terakhir ke node baru
+        # sambungin pointer node terakhir ke node baru
         current.next = node_baru
 
     def muat_dari_txt(self, nama_file="menu.txt"):
-        """
-        Membaca data dari file .txt dan memuatnya ke dalam Linked List.
-        """
+        """ Baca data dari file txt, terus masukin ke Linked List. """
         try:
             with open(nama_file, 'r') as file:
                 for line in file:
-                    # Menghilangkan whitespace/newline di awal dan akhir
-                    line = line.strip()
+                    line = line.strip() # bersihin enter/spasi berlebih
                     if not line:
-                        continue  # Abaikan baris kosong
+                        continue # skip baris kosong
                     
-                    # Memisahkan data berdasarkan koma (CSV format)
+                    # split string dari format CSV
                     parts = line.split(',')
                     if len(parts) == 4:
                         jenis, nama, harga, stok = parts
                         self.tambah_di_akhir(jenis.strip(), nama.strip(), harga, stok)
-            print(f"[INFO] Data menu berhasil dimuat dari {nama_file}.")
         except FileNotFoundError:
-            print(f"[ERROR] File {nama_file} tidak ditemukan!")
+            print(f"[red][ERROR][/red] File {nama_file} nggak ketemu!")
 
     def tampilkan_menu(self):
-        """Mencetak daftar menu dengan library rich (4 Kolom)"""
-        console = Console()
+        """ Print UI menu pakai library rich (dibuat 4 kolom). """
+        console = Console(highlight=False)
         if not self.head:
             console.print("[bold red]Daftar menu masih kosong.[/bold red]")
             return
 
+        # grouping menu ke dictionary biar gampang di-print per kategori
         kategori_menu = {}
         current = self.head
         while current:
@@ -79,30 +68,27 @@ class LinkedListMenu:
             kategori_menu[current.jenis].append(current)
             current = current.next
 
-        # Membuat tabel utama (tanpa garis luar)
+        # setup tabel layout simple
         table = Table(show_header=False, box=box.SIMPLE, expand=True)
-        for _ in range(4): # 4 Kolom sesuai permintaan
+        for _ in range(4): 
             table.add_column(justify="left", ratio=1)
 
         nama_kategori = list(kategori_menu.keys())
         
-        # Memecah kategori menjadi per 4 kolom
+        # pecah kategori jadi per 4 kolom
         for i in range(0, len(nama_kategori), 4):
             chunk = nama_kategori[i:i+4]
             
-            # Baris untuk Judul Kategori
             judul_cols = [f"[bold cyan]-- {k.upper()} --[/bold cyan]" for k in chunk]
-            # Menambah padding kosong jika kategori kurang dari 4 di baris terakhir
             while len(judul_cols) < 4:
                 judul_cols.append("")
             table.add_row(*judul_cols)
             
-            # Baris untuk Isi Menu
             isi_cols = []
             for k in chunk:
                 teks_menu = ""
                 for item in kategori_menu[k]:
-                    # Menggunakan :, untuk ribuan dan replace untuk mengubah koma ke titik
+                    # convert integer ke string format rupiah
                     harga_format = f"Rp{item.harga:,}".replace(",", ".")
                     teks_menu += f"[white]{item.nama}[/white]\n[yellow]{harga_format}[/yellow]\n\n"
                 isi_cols.append(teks_menu.strip())
@@ -110,26 +96,23 @@ class LinkedListMenu:
             while len(isi_cols) < 4:
                 isi_cols.append("")
             table.add_row(*isi_cols)
-            table.add_row("", "", "", "") # Spasi antar baris kategori
+            table.add_row("", "", "", "")
 
         panel = Panel(table, title="[bold magenta] DAFTAR MENU SARIAWAM [/bold magenta]", border_style="magenta")
         console.print(panel)
 
     def cari_menu(self, nama_menu):
-        """
-        Mencari menu berdasarkan nama (case-insensitive).
-        Return: Object NodeMenu jika ditemukan, atau None jika tidak ditemukan.
-        """
+        """ Cari menu by nama exact. Return object Node kalo ketemu. """
         current = self.head
         while current:
-            # Menggunakan .lower() agar pencarian tidak sensitif terhadap huruf besar/kecil
+            # di-lower() semua biar case-insensitive
             if current.nama.lower() == nama_menu.lower():
                 return current
             current = current.next
         return None
 
     def cari_menu_sebagian(self, keyword):
-        """Mencari menu yang mengandung kata kunci (partial match)"""
+        """ Fitur search pakai keyword (partial match). Return list of Nodes. """
         hasil = []
         current = self.head
         while current:
@@ -139,33 +122,30 @@ class LinkedListMenu:
         return hasil
 
     def urutkan_harga(self, ascending=True):
-        """
-        Mengurutkan menu di dalam Linked List berdasarkan harga.
-        Menggunakan algoritma Bubble Sort pada nilai (value) dari node.
-        """
+        """ Sorting Linked List pakai Bubble Sort (cuma swap value/datanya). """
         if not self.head or not self.head.next:
-            return  # Tidak perlu diurutkan jika kosong atau hanya 1 elemen
+            return  # skip kalo list kosong atau cuma 1 node
 
         swapped = True
         while swapped:
             swapped = False
             current = self.head
             while current.next:
-                # Tentukan kondisi pertukaran berdasarkan parameter ascending
+                # cek kondisi asc / desc
                 if ascending:
                     kondisi_tukar = current.harga > current.next.harga
                 else:
                     kondisi_tukar = current.harga < current.next.harga
 
-                # Jika kondisi terpenuhi, tukar (swap) isi data nodenya
+                # eksekusi swap data kalo kondisi terpenuhi
                 if kondisi_tukar:
-                    # Menukar jenis
+                    # swap jenis
                     current.jenis, current.next.jenis = current.next.jenis, current.jenis
-                    # Menukar nama
+                    # swap nama
                     current.nama, current.next.nama = current.next.nama, current.nama
-                    # Menukar harga
+                    # swap harga
                     current.harga, current.next.harga = current.next.harga, current.harga
-                    # Menukar stok
+                    # swap stok
                     current.stok, current.next.stok = current.next.stok, current.stok
                     
                     swapped = True
@@ -173,33 +153,25 @@ class LinkedListMenu:
                 current = current.next
 
     def kurangi_stok(self, nama_menu, jumlah):
-        """
-        Mengurangi stok dari suatu menu ketika dipesan.
-        Akan dipanggil oleh modul antrean / kasir.
-        Return: True jika berhasil, False jika stok kurang atau menu tidak ada.
-        """
+        """ Update stok node waktu ada pesanan di kasir. """
         node = self.cari_menu(nama_menu)
         if node:
             if node.stok >= jumlah:
                 node.stok -= jumlah
                 return True
             else:
-                print(f"[Peringatan] Stok {node.nama} tidak mencukupi! Sisa stok: {node.stok}")
+                print(f"[Peringatan] Stok {node.nama} kurang! Sisa: {node.stok}")
                 return False
         else:
-            print(f"[Peringatan] Menu '{nama_menu}' tidak ditemukan di database.")
+            print(f"[Peringatan] Menu '{nama_menu}' ga ketemu di database.")
             return False
 
     def ambil_semua_data(self):
-        """
-        Mengambil seluruh data pada Linked List dan mengemasnya menjadi list of string.
-        Format pengembalian (Return): ["jenis,nama,harga,stok", "jenis,nama,harga,stok", ...]
-        Berguna untuk di-rewrite kembali ke file menu.txt oleh teman setim.
-        """
+        """ Ambil semua data list buat di-rewrite balik ke txt. """
         list_data = []
         current = self.head
         while current:
-            # Memformat atribut sesuai format awal file txt
+            # format ulang stringnya persis kayak format txt awal
             baris_data = f"{current.jenis},{current.nama},{current.harga},{current.stok}"
             list_data.append(baris_data)
             current = current.next
